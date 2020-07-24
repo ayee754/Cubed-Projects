@@ -41,8 +41,6 @@ public class Events implements Listener {
                     }
                 }
             }
-        } catch(NumberFormatException | ClassCastException e) {
-            System.out.println(e);
-        }
+        } catch(NumberFormatException | ClassCastException e) {}
     }
 }
