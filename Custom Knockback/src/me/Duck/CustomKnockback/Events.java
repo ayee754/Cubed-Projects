@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class Events implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageByEntityEvent event) {
 
         Entity attacker = event.getDamager();
