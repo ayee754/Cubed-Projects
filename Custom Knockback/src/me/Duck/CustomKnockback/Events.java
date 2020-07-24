@@ -26,7 +26,6 @@ public class Events implements Listener {
         }
         
         try {
-
             if(attacker instanceof Player) {
                 if(((Player) attacker).isSprinting()) {
                     if (victim.isOnGround()) {
