@@ -24,26 +24,26 @@ public class Events implements Listener {
         if (((Player) attacker).getNoDamageTicks() > ((Player) attacker).getMaximumNoDamageTicks() / 2D) {
             return;
         }
+        
+        try {
 
-        if(victim instanceof Player) {
-            try {
-
-                if(attacker instanceof Player) {
-                    if(((Player) attacker).isSprinting()) {
-                        if (victim.isOnGround()) {
-                            victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.58D).setY(-0.42F));
-                        } else {
-                            victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.38D).setY(-0.42F));
-                        }
+            if(attacker instanceof Player) {
+                if(((Player) attacker).isSprinting()) {
+                    if (victim.isOnGround()) {
+                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.58D).setY(-0.42F));
                     } else {
-                        if (victim.isOnGround()) {
-                            victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.1D).setY(-0.109F));
-                        } else {
-                            victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.03D).setY(-0.42F));
-                        }
+                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.38D).setY(-0.42F));
+                    }
+                } else {
+                    if (victim.isOnGround()) {
+                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.1D).setY(-0.109F));
+                    } else {
+                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.03D).setY(-0.42F));
                     }
                 }
-            } catch(NumberFormatException | ClassCastException e) {}
+            }
+        } catch(NumberFormatException | ClassCastException e) {
+            System.out.println(e);
         }
     }
 }
