@@ -1,46 +1,41 @@
 package me.Duck.CustomKnockback;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.util.Vector;
 
 public class Events implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageByEntityEvent event) {
 
-        Entity attacker = event.getDamager();
+        Player attacker = ((Player) event.getDamager());
+        Vector atkLoc = attacker.getLocation().getDirection();
         Entity victim = event.getEntity();
 
-        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
-            return;
-        }
+        if(!(victim instanceof Player)) return;
+        if (!(attacker instanceof Player)) return;
+        if (event.isCancelled()) return;
+        if (attacker.getNoDamageTicks() > attacker.getMaximumNoDamageTicks() / 2) return;
 
-        if (event.isCancelled()) {
-            return;
-        }
-
-        if (((Player) attacker).getNoDamageTicks() > ((Player) attacker).getMaximumNoDamageTicks() / 2D) {
-            return;
-        }
-        
         try {
-            if(attacker instanceof Player) {
-                if(((Player) attacker).isSprinting()) {
-                    if (victim.isOnGround()) {
-                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.58D).setY(-0.42F));
-                    } else {
-                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.38D).setY(-0.42F));
-                    }
+            if(attacker.isSprinting()) {
+                if (victim.isOnGround()) {
+                    victim.setVelocity(atkLoc.multiply(-0.17D).setY(-0.42F));
                 } else {
-                    if (victim.isOnGround()) {
-                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.1D).setY(-0.109F));
-                    } else {
-                        victim.setVelocity(attacker.getLocation().getDirection().multiply(-0.03D).setY(-0.42F));
-                    }
+                    victim.setVelocity(atkLoc.multiply(-0.38D).setY(-0.42F));
+                }
+            } else {
+                if (victim.isOnGround()) {
+                    victim.setVelocity(atkLoc.multiply(-0.1D).setY(-0.109F));
+                } else {
+                    victim.setVelocity(atkLoc.multiply(-0.03D).setY(-0.42F));
                 }
             }
-        } catch(NumberFormatException | ClassCastException e) {}
+        } catch(NumberFormatException | ClassCastException e) { e.printStackTrace(); }
     }
 }
